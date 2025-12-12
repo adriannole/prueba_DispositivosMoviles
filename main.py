@@ -16,13 +16,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # ========================
 # CONFIGURACIÓN ESTÁTICA
-# Completa estos valores antes de ejecutar.
 # ========================
-INSTA_USERNAME = "xxxxxxxxxxxxxxxxx"
-INSTA_PASSWORD = "xxxxxx"
-TARGET_ACCOUNT = "esedgarcia"  # Cuenta cuyo listado de seguidos quieres extraer
+INSTA_USERNAME = "xxxxxxxxxxxxxxxxx" # USUARIO DE INSTAGRAM
+INSTA_PASSWORD = "xxxxxx" # CONTRASEÑA DE INSTAGRAM
+TARGET_ACCOUNT = "esedgarcia"  # cUENTA oBJETIVO
 OUTPUT_JSON = "seguido_detalle.json"  # Archivo de salida
-MAX_PROFILES = 100  # Límite de perfiles
+MAX_PROFILES = 100  # Límite de perfiles 100 PARA EVITAR BLOQUEOS,
 
 
 def build_driver() -> webdriver.Chrome:
