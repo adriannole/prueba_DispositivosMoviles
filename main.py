@@ -18,8 +18,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 # CONFIGURACIÓN ESTÁTICA
 # Completa estos valores antes de ejecutar.
 # ========================
-INSTA_USERNAME = "adriannole73@gmail.com"
-INSTA_PASSWORD = "arbolito157"
+INSTA_USERNAME = "xxxxxxxxxxxxxxxxx"
+INSTA_PASSWORD = "xxxxxx"
 TARGET_ACCOUNT = "esedgarcia"  # Cuenta cuyo listado de seguidos quieres extraer
 OUTPUT_JSON = "seguido_detalle.json"  # Archivo de salida
 MAX_PROFILES = 100  # Límite de perfiles
