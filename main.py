@@ -1,22 +1,3 @@
-"""
-Scrapea la lista de seguidos (following) de una cuenta de Instagram con Selenium
-y guarda datos básicos de cada perfil en JSON.
-
-Campos extraídos por perfil:
-- username
-- nombre (full_name)
-- biografia
-- tipo_cuenta (PERSONAL/CREATOR/BUSINESS si aparece en el HTML)
-- seguidores (count)
-- seguidos (count)
-- perfil_url
-
-Notas importantes:
-- Usa tus credenciales y el user-agent que prefieras en las variables de configuración.
-- Instagram cambia el DOM con frecuencia; si falla un XPATH/CSS, ajusta los selectores.
-- Evita abusar: limita el número de perfiles a scrapear para reducir riesgo de bloqueo.
-- Respeta los términos de uso de Instagram y la legislación de tu país antes de automatizar.
-"""
 
 import json
 import random
@@ -41,7 +22,7 @@ INSTA_USERNAME = "0978925415"
 INSTA_PASSWORD = "Arbolito157@"
 TARGET_ACCOUNT = "esedgarcia"  # Cuenta cuyo listado de seguidos quieres extraer
 OUTPUT_JSON = "seguido_detalle.json"  # Archivo de salida
-MAX_PROFILES = 5  # Límite de perfiles a visitar para evitar bloqueos (ajusta a tu riesgo)
+MAX_PROFILES = 5  # Límite de perfiles
 
 
 def build_driver() -> webdriver.Chrome:
@@ -62,7 +43,7 @@ def human_sleep(min_s: float = 1.2, max_s: float = 3.5, label: str = "") -> None
 	"""Pausa aleatoria para simular comportamiento humano."""
 	dur = random.uniform(min_s, max_s)
 	if label:
-		print(f"⏳ Pausa {label}: {dur:.2f}s")
+		print(f" Pausa {label}: {dur:.2f}s")
 	time.sleep(dur)
 
 
@@ -227,11 +208,11 @@ def collect_following_usernames(driver: webdriver.Chrome, manual_idle_s: int = 1
 
 		idle = time.time() - last_change_ts
 		if idle >= manual_idle_s:
-			print(f"⏹️ Sin nuevos usuarios por {manual_idle_s}s. Deteniendo lectura manual.")
+			print(f" Sin nuevos usuarios por {manual_idle_s}s. Deteniendo lectura manual.")
 			break
 
 		if (time.time() - last_change_ts) > hard_timeout:
-			print("⏹️ Tiempo máximo alcanzado en modo manual. Deteniendo.")
+			print(" Tiempo máximo alcanzado en modo manual. Deteniendo.")
 			break
 
 		human_sleep(1.0, 1.6, label="esperando scroll manual")
@@ -280,13 +261,55 @@ def scrape_profile(driver: webdriver.Chrome, username: str) -> ProfileData:
 		full_name_raw = safe_text(r'"full_name":"(.*?)"', source)
 		full_name = decode_json_string(full_name_raw)
 
-	# Biografía mediante XPath
+	# Biografía mediante XPath (múltiples estrategias) - EVITANDO el nombre
 	biografia = None
 	try:
-		bio_el = driver.find_element(By.XPATH, '//section//header//div[contains(@class, "x7a106z")] | //section//header//span[contains(@class, "_ap3a")]//span')
-		biografia = bio_el.text.strip() or None
+		# Estrategia 1: XPath absoluto del inspector
+		bio_el = driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div[1]/div[2]/div[1]/section/main/div/div/header/section[4]/div/span/div/span')
+		txt = bio_el.text.strip()
+		if txt and txt != full_name:  # Evitar que sea el nombre
+			biografia = txt
 	except NoSuchElementException:
 		pass
+	
+	if not biografia:
+		try:
+			# Estrategia 2: Relativo section[4]
+			bio_el = driver.find_element(By.XPATH, '//section/main/div/div/header/section[4]//span')
+			txt = bio_el.text.strip()
+			if txt and txt != full_name:
+				biografia = txt
+		except NoSuchElementException:
+			pass
+	
+	if not biografia:
+		try:
+			# Estrategia 3: Buscar span después del h1 (la bio suele estar justo debajo del nombre)
+			header = driver.find_element(By.XPATH, '//section//header')
+			# Intentar encontrar el span que esté después del h1 y que no sea el nombre
+			bio_candidates = header.find_elements(By.XPATH, './/h1/following-sibling::div//span | .//section[4]//span')
+			for candidate in bio_candidates:
+				txt = candidate.text.strip()
+				# Debe tener texto, no ser el nombre, y no ser solo números (contadores)
+				if txt and txt != full_name and len(txt) > 5 and not txt.replace(',', '').replace('.', '').replace('k', '').replace('K', '').replace('M', '').replace('m', '').isdigit():
+					biografia = txt
+					break
+		except NoSuchElementException:
+			pass
+	
+	if not biografia:
+		try:
+			# Estrategia 4: Buscar todos los span y excluir nombre + números
+			header = driver.find_element(By.XPATH, '//section//header')
+			spans = header.find_elements(By.XPATH, './/span')
+			for span in spans:
+				txt = span.text.strip()
+				# Filtro: no es el nombre, tiene más de 10 chars, no es solo números
+				if txt and txt != full_name and len(txt) > 10 and not txt.replace(',', '').replace('.', '').isdigit():
+					biografia = txt
+					break
+		except NoSuchElementException:
+			pass
 
 	# Fallback regex
 	if not biografia:

@@ -2,46 +2,46 @@
   {
     "username": "kleisitaa",
     "nombre": "kleisitaa",
-    "biografia": "kleisitaa\nKlei Castillo\n6 publicaciones\n4534 seguidores\n183 seguidos",
+    "biografia": "Klei Castillo",
     "tipo_cuenta": "PERSONAL",
     "seguidores": 4534,
     "seguidos": 183,
     "perfil_url": "https://www.instagram.com/kleisitaa/"
   },
   {
-    "username": "lerapfrancais",
-    "nombre": "lerapfrancais",
-    "biografia": "lerapfrancais\nLRF\n2755 publicaciones\n357 mil seguidores\n112 seguidos",
-    "tipo_cuenta": "PERSONAL",
-    "seguidores": 357580,
-    "seguidos": 112,
-    "perfil_url": "https://www.instagram.com/lerapfrancais/"
-  },
-  {
     "username": "lando",
     "nombre": "lando",
-    "biografia": "lando\nLando Norris\n1929 publicaciones\n11,5 M seguidores\n682 seguidos",
+    "biografia": "Lando Norris",
     "tipo_cuenta": "PERSONAL",
-    "seguidores": 11557825,
+    "seguidores": 11557974,
     "seguidos": 682,
     "perfil_url": "https://www.instagram.com/lando/"
   },
   {
     "username": "rawayana",
     "nombre": "rawayana",
-    "biografia": "rawayana\nRAWA\n2 publicaciones\n1,2 M seguidores\n0 seguidos",
+    "biografia": "2 publicaciones",
     "tipo_cuenta": "PERSONAL",
-    "seguidores": 1214605,
+    "seguidores": 1214610,
     "seguidos": null,
     "perfil_url": "https://www.instagram.com/rawayana/"
   },
   {
     "username": "formula2",
     "nombre": "formula2",
-    "biografia": "formula2\nFormula 2\n13.115 publicaciones\n2 M seguidores\n175 seguidos",
+    "biografia": "13.115 publicaciones",
     "tipo_cuenta": "PERSONAL",
-    "seguidores": 2042965,
+    "seguidores": 2042974,
     "seguidos": 175,
     "perfil_url": "https://www.instagram.com/formula2/"
+  },
+  {
+    "username": "aefica_uce",
+    "nombre": "aefica_uce",
+    "biografia": "44 publicaciones",
+    "tipo_cuenta": "PERSONAL",
+    "seguidores": 684,
+    "seguidos": 8,
+    "perfil_url": "https://www.instagram.com/aefica_uce/"
   }
 ]
