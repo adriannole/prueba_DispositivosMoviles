@@ -1,6 +1,6 @@
 # Análisis de Seguidos: @esedgarcia
 
-Análisis basado en los datos extraídos de 100 perfiles seguidos por la cuenta @esedgarcia en Instagram.
+Análisis basado en los datos extraídos seguidos por la cuenta @esedgarcia en Instagram.
 
 ---
 
